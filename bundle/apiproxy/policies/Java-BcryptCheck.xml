@@ -1,0 +1,8 @@
+<JavaCallout name='Java-BcryptCheck'>
+  <Properties>
+    <Property name='hash'>{bcrypt_hash}</Property>
+    <Property name='password'>{plaintext_password}</Property>
+  </Properties>
+  <ClassName>com.google.apigee.edgecallouts.BcryptCheck</ClassName>
+  <ResourceURL>java://edge-bcrypt-password-check-1.0.1.jar</ResourceURL>
+</JavaCallout>
