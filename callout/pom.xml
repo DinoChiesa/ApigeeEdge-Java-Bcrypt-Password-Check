@@ -127,10 +127,10 @@ do it manually by running these commands:
                     <include name="${project.artifactId}-${project.version}.jar"/>
                     <!-- copy any required dependencies tht are not
                     already included in the Edge runtime:
+                    -->
 
-                    <include name="lib/jackson-databind-2.5.0.jar"/>
+                    <include name="lib/bcprov-jdk15on-1.59.jar"/>
 
-                                       -->
 
                   </fileset>
                   <mapper type="flatten"/>
