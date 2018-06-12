@@ -38,11 +38,11 @@ You can specify these with context variables using the curly-brace syntax shown 
 
 You need to insure the BouncyCastle JAR is installed in the apiproxy/resources/java directory.
 
-See [the example API proxy included here](./bundle) for details. 
+See [the example API proxy included here](./bundle) for details.
 
 ## License
 
-This material is copyright 2018, Google Inc.
+This material is copyright 2018, Google LLC.
 and is licensed under the Apache 2.0 license. See the [LICENSE](LICENSE) file.
 
 

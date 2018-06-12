@@ -3,7 +3,7 @@
 // This is the source code for a Java callout for Apigee Edge.
 // This callout is very simple - it performns a BCrypt password check.
 //
-// Copyright 2018 Google Inc.
+// Copyright 2018 Google LLC.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
