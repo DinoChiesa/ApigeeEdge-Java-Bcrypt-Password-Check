@@ -4,9 +4,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google.apigee.edgecallouts</groupId>
-  <artifactId>edge-bcrypt-password-check</artifactId>
-  <version>1.0.1</version>
-  <name>EdgeJavaCalloutBCryptPasswordCheck</name>
+  <artifactId>apigee-bcrypt-password-check</artifactId>
+  <version>20220104</version>
+  <name>ApigeeBCryptPasswordCheck</name>
   <url>http://maven.apache.org</url>
   <packaging>jar</packaging>
   <properties>
@@ -21,7 +21,7 @@
 <dependency>
     <groupId>org.bouncycastle</groupId>
     <artifactId>bcprov-jdk15on</artifactId>
-    <version>1.59</version>
+    <version>[1.67,)</version>
 </dependency>
 
 <!--
@@ -62,12 +62,6 @@ do it manually by running these commands:
       <version>1.0.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
-      <version>2.6</version>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -96,17 +90,22 @@ do it manually by running these commands:
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
+        <version>3.8.1</version>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <showDeprecation>true</showDeprecation>
+          <source>${jdk.target.version}</source>
+          <target>${jdk.target.version}</target>
+          <compilerArgs>
+            <!-- <arg>-verbose</arg> -->
+            <arg>-Xlint:unchecked,deprecation</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.2</version>
+        <version>3.2.0</version>
         <configuration>
           <archive>
             <!-- do not include the pom.xml file in the generated jar -->
@@ -117,28 +116,82 @@ do it manually by running these commands:
 
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.0.0</version>
         <executions>
           <execution>
-            <phase>package</phase>
+            <id>ant1</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
             <configuration>
-              <tasks>
+              <target>
+                <delete>
+                  <fileset dir="${apiproxy.java.rsrc.dir}">
+                    <include name="*.jar" />
+                  </fileset>
+                </delete>
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>ant2</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
                 <copy todir="${apiproxy.java.rsrc.dir}">
                   <fileset dir="${project.build.directory}">
                     <include name="${project.artifactId}-${project.version}.jar"/>
                     <!-- copy any required dependencies tht are not
-                    already included in the Edge runtime:
+                    already included in the Apigee runtime:
                     -->
-
-                    <include name="lib/bcprov-jdk15on-1.59.jar"/>
-
-
+                    <include name="lib/*.jar"/>
+                    <exclude name="lib/message-flow-1.0.0.jar"/>
+                    <exclude name="lib/expressions-1.0.0.jar"/>
+                    <exclude name="lib/bcprov-jdk15on-*.jar"/>
                   </fileset>
                   <mapper type="flatten"/>
                 </copy>
-              </tasks>
+              </target>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
             <goals>
-              <goal>run</goal>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.5.0</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.8.1</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>display-dependency-updates</goal>
+              <goal>display-plugin-updates</goal>
             </goals>
           </execution>
         </executions>

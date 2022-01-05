@@ -3,6 +3,6 @@
     <Property name='hash'>{bcrypt_hash}</Property>
     <Property name='password'>{plaintext_password}</Property>
   </Properties>
-  <ClassName>com.google.apigee.edgecallouts.BcryptCheck</ClassName>
-  <ResourceURL>java://edge-bcrypt-password-check-1.0.1.jar</ResourceURL>
+  <ClassName>com.google.apigee.callouts.BcryptCheck</ClassName>
+  <ResourceURL>java://apigee-bcrypt-password-check-20220104.jar</ResourceURL>
 </JavaCallout>
